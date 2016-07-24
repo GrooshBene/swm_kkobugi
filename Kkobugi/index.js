@@ -9,9 +9,6 @@ var app = express();
 
 var server = require('http').Server(app);
 var https = require('https');
-app.use(bodyParser.urlencoded({
-    extended : true
-}));
 
 var schema = mongoose.Schema;
 
@@ -38,7 +35,7 @@ var userSchema = new schema({
 
 });
 
-var percentSchema = new Schema({
+var percentSchema = new schema({
     _id : {
         type : String
     },
