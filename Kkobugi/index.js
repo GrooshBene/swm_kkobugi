@@ -39,7 +39,7 @@ var userSchema = new schema({
 });
 
 var percentSchema = new Schema({
-    id : {
+    _id : {
         type : String
     },
     user_id : {
@@ -47,6 +47,9 @@ var percentSchema = new Schema({
     },
     percent : {
         type : Number
+    },
+    date : {
+        type : String
     }
 });
 
@@ -59,4 +62,4 @@ console.log("Server Running At Port 8000");
 
 require('./route/oauth')(app, User);
 
-require('./route/data')(app, User, Data)
+require('./route/data')(app, User, Data);

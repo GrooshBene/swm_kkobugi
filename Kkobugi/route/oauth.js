@@ -10,7 +10,6 @@ function init(app, User) {
     app.use(passport.initialize());
     app.use(passport.session());
     var FacebookTokenStrategy = require('passport-facebook-token');
-    var data_base = mongoose.connection;
     mongoose.connect("mongodb://localhost:27017/kkobugi", function (err) {
         if(err){
             console.log('MongoDB Error!');
@@ -137,6 +136,33 @@ function init(app, User) {
                 res.send(401, "Access Denied");
             }
         })
+    });
+
+    app.post('/friend/facebook/find', function (req, res) {
+
+    })
+
+
+    app.post('/friend/local/find', function (req, res) {
+        User.find({phone : req.param('phone')}, function (err, result) {
+            if(err){
+                console.log("friend/local/find err");
+                throw err;
+            }
+            console.log("Local Found : "+result);
+            res.send(200, result);
+        })
+    });
+
+    app.post('/friend/add', function (req, res) {
+        User.update({_id : req.param('userId')}, {$push : {friends: req.param('id')}, function(err, model){
+            if(err){
+                console.log("Update Error");
+                throw err;
+            }
+            console.log("Updated : "+ model);
+            res.send(200, model);
+        }});
     });
 
     
