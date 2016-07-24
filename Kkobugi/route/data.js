@@ -5,22 +5,18 @@
 module.exports = init;
 
 function init(app, User, Data) {
-    var mongoose = require('mongoose');
-    mongoose.connect("mongodb://localhost:27017/kkobugi", function (err) {
-        if(err){
-            console.log("MongoDB Error!");
-            throw err;
-        }
-    });
+
+    var randomString = require('randomstring');
 
     app.post('/data/add/today', function (req, res) {
         data = new Data({
+            _id : randomString.generate(15),
             user_id : req.param('user_id'),
             percent: req.param('percent'),
             date : req.param('date')
         });
-        data.save(function (err) {
-            if(err, result){
+        data.save(function (err, result) {
+            if(err){
                 console.log("Percent Data Saving error!");
                 throw err;
             }

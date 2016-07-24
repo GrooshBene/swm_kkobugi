@@ -10,14 +10,6 @@ function init(app, User) {
     app.use(passport.initialize());
     app.use(passport.session());
     var FacebookTokenStrategy = require('passport-facebook-token');
-    mongoose.connect("mongodb://localhost:27017/kkobugi", function (err) {
-        if(err){
-            console.log('MongoDB Error!');
-            throw err;
-        }
-    });
-
-    var schema = mongoose.Schema;
 
     passport.serializeUser(function(user, done){
         done(null, user);
@@ -80,18 +72,19 @@ function init(app, User) {
 
     app.post('/auth/register', function (req, res) {
         user = new User({
+            _id : randomString.generate(13),
             name : req.param('name'),
             phone : req.param('phone'),
-            passwd : req.paran('passwd'),
+            passwd : req.param('passwd'),
             api_token : randomString.generate(15)
         });
-        console.log("user register : " + user);
         user.save(function (err) {
             if(err){
                 console.log("/auth/register Failed");
                 throw err;
             }
             else{
+                console.log("user register : " + user);
                 res.send(200, user);
             }
         });
@@ -105,17 +98,18 @@ function init(app, User) {
                 console.log("/auth/authenticate failed");
                 throw err;
             }
+            console.log("User "+result+"Logged In");
             res.send(200, result);
         })
     });
 
     app.post('/auth/destroy', function (req, res) {
-        console.log("Destroy User : " +req.param('id'));
-        User.findOne({id : req.param('id')}, function (err, result) {
+        User.findOne({_id : req.param('id')}, function (err, result) {
             if(err){
                 console.log("/auth/destroy Failed");
                 throw err;
             }
+            console.log("Destroy User : " +req.param('id'));
             res.send(200, result);
         }).remove();
     });
@@ -127,6 +121,7 @@ function init(app, User) {
                 console.log("/auth/login failed");
                 throw err;
             }
+            console.log("DB Founded : "+ result);
             if(result.passwd == req.param('passwd')){
                 console.log("User "+ result.name+ "Logged In");
                 res.send(200, result);
@@ -155,14 +150,29 @@ function init(app, User) {
     });
 
     app.post('/friend/add', function (req, res) {
-        User.update({_id : req.param('userId')}, {$push : {friends: req.param('id')}, function(err, model){
-            if(err){
-                console.log("Update Error");
+        var friendArr=[];
+        User.findOne({_id: req.param('userId')}, function (err, result) {
+            if (err) {
+                console.log("/friend/add Error");
                 throw err;
             }
-            console.log("Updated : "+ model);
-            res.send(200, model);
-        }});
+            console.log("Founded : "+result);
+            friendArr = result.friends;
+            console.log("Result's friends array : "+friendArr);
+            friendArr.push(req.param('id'));
+            User.update({_id: req.param('userId')}, {friends: friendArr}, function (err, result) {
+                if (err) {
+                    console.log("/friend/add Update Error");
+                    throw err;
+                }
+                else {
+                    console.log("FriendAdded : "+friendArr);
+                    console.log("Friend Updated : "+ friendArr);
+                    res.send(200, result);
+                }
+            });
+
+        });
     });
 
     

@@ -11,6 +11,12 @@ var server = require('http').Server(app);
 var https = require('https');
 
 var schema = mongoose.Schema;
+mongoose.connect("mongodb://localhost:27017/kkobugi", function (err) {
+    if(err){
+        console.log("MongoDB Error!");
+        throw err;
+    }
+});
 
 var userSchema = new schema({
     _id : {
@@ -29,6 +35,9 @@ var userSchema = new schema({
         type : Array
     },
     api_token : {
+        type : String
+    },
+    passwd : {
         type : String
     }
 
