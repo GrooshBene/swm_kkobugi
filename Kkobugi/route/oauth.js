@@ -175,6 +175,30 @@ function init(app, User) {
         });
     });
 
+
+    app.post('/friend/getlist', function (req,res) {
+        User.findOne({_id : req.param('id')}, function (err, result) {
+            if(err){
+                console.log("/friend/getlist error");
+                throw err;
+            }
+
+            console.log("Founded : " + result);
+            res.send(200, result.friends);
+        })
+
+    });
+
+    app.post('/friend/getinfo', function (req, res) {
+        User.findOne({_id : req.param('id')}, function (err, result) {
+            if(err){
+                console.log("/friend/getinfo error");
+                throw err;
+            }
+            console.log("Founded : "+ result);
+            res.send(200, result);
+        })
+    });
     
 
     //function end

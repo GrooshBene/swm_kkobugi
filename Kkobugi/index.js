@@ -39,6 +39,10 @@ var userSchema = new schema({
     },
     passwd : {
         type : String
+    },
+    average : {
+        type : Number,
+        default : 0
     }
 
 
