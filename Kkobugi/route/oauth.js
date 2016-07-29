@@ -7,6 +7,7 @@ function init(app, User) {
     var mongoose = require('mongoose');
     var passport = require('passport');
     var randomString = require('randomstring');
+    var graph = require('fbgraphapi');
     app.use(passport.initialize());
     app.use(passport.session());
     var FacebookTokenStrategy = require('passport-facebook-token');
@@ -135,7 +136,11 @@ function init(app, User) {
     });
 
     app.post('/friend/facebook/find', function (req, res) {
-        
+        var fb = new graph.Facebook(req.param('access_token'), 'v2.2');
+        fb.getAppFriends(function (err, result) {
+              console.log("Fb Friends! " +result);
+              res.send(200, result);
+        })
     });
 
 
