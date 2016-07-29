@@ -40,15 +40,20 @@ function init(app, User, Data) {
             }
             average = sum/result.length;
             console.log("Average : "+average);
-            User.update({
-                _id : req.param('user_id')
-            }, {average : average}, function (err, result) {
-                if(err){
-                    console.log("Data Average Update Failed");
-                    throw err;
-                }
-                console.log("Average Updated : "+ result);
-            })
+            if(!isNaN(average)) {
+                User.update({
+                    _id: req.param('user_id')
+                }, {average: average}, function (err, result) {
+                    if (err) {
+                        console.log("Data Average Update Failed");
+                        throw err;
+                    }
+                    console.log("Average Updated : " + result);
+                })
+            }
+            else if(isNaN(average)){
+                console.log("Average : "+average);
+            }
         })
     });
 
