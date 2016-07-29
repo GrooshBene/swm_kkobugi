@@ -6,7 +6,10 @@ var express = require('express');
 var mongoose = require('mongoose');
 var serveStatic = require('serve-static');
 var app = express();
-app.use(express.bodyParser());
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({
+    extended : true
+}));
 
 var server = require('http').Server(app);
 var https = require('https');
