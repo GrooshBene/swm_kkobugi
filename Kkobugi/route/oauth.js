@@ -135,8 +135,8 @@ function init(app, User) {
     });
 
     app.post('/friend/facebook/find', function (req, res) {
-
-    })
+        
+    });
 
 
     app.post('/friend/local/find', function (req, res) {

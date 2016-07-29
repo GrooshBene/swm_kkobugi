@@ -6,6 +6,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var serveStatic = require('serve-static');
 var app = express();
+app.use(express.bodyParser());
 
 var server = require('http').Server(app);
 var https = require('https');
@@ -67,8 +68,8 @@ var percentSchema = new schema({
 var User = mongoose.model('user', userSchema);
 var Data = mongoose.model('datas', percentSchema);
 
-server.listen(8000);
-console.log("Server Running At Port 8000");
+server.listen(9000);
+console.log("Server Running At Port 9000");
 
 require('./route/oauth')(app, User);
 

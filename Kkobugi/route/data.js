@@ -42,7 +42,7 @@ function init(app, User, Data) {
             console.log("Average : "+average);
             if(!isNaN(average)) {
                 User.update({
-                    _id: req.param('user_id')
+                    _id: req.body.user_id
                 }, {average: average}, function (err, result) {
                     if (err) {
                         console.log("Data Average Update Failed");
