@@ -26,7 +26,7 @@ function init(app, User) {
     }, function (accessToken, refreshToken, profile, done) {
         console.log(profile);
         User.findOne({
-            'id' : profile.id
+            '_id' : profile.id
         }, function (err, user) {
             if(err){
                 return done(err);
@@ -38,7 +38,8 @@ function init(app, User) {
                     profile: profile.photos,
                     gender : profile.gender,
                     friends : [],
-                    phone : profile.phone
+                    phone : profile.phone,
+                    average : 0
                 });
                 user.save(function (err) {
                     if(err) console.log(err);
