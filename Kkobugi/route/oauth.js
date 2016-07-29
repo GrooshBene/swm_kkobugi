@@ -183,7 +183,7 @@ function init(app, User) {
                 console.log("/friend/getlist error");
                 throw err;
             }
-
+            console.log("Requested ID : "+ req.param('id'));
             console.log("Founded : " + result);
             res.send(200, result.friends);
         })
